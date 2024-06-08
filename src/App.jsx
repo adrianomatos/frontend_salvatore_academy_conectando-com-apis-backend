@@ -1,29 +1,27 @@
-import Card from "./components/Card/Card";
+import { useEffect, useState } from "react";
 import "./App.css";
+import Card from "./components/Card/Card";
 
 function App() {
+  const [devmons, setDevmons] = useState([]);
 
   async function fetchData() {
     const apiUrl =
       "https://backend-integracao-com-frontend.onrender.com/personagens/";
-
     const response = await fetch(apiUrl);
-
     const data = await response.json();
+    setDevmons(data);
   }
-  fetchData();
+  
+	// Chama API só 1X
+	useEffect(function(){
+		fetchData();
+	}, [])
 
-  // Usando dados recebidos e gerando CARD dinamicamente:
   return (
     <div className="cards">
-      {apiDevmons.map(function (meuDevmon) {
-        return (
-          <Card
-            key={meuDevmon.nome}
-            item={meuDevmon}
-            // imagem={meuDevmon.imagem} - Enviado iten separado
-          />
-        );
+      {devmons.map(function (devmon) {
+        return <Card key={devmon.nome} item={devmon} />;
       })}
     </div>
   );
