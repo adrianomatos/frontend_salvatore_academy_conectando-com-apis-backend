@@ -2,19 +2,16 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import { Api } from "./api/api";
 import Card from "./components/Card/Card";
 
 function App() {
   const [devmons, setDevmons] = useState([]);
 
   async function fetchData() {
-    const apiUrl =
-      "https://backend-integracao-com-frontend.onrender.com/personagens/";
-
-    const response = await fetch(apiUrl).catch(function (error) {
-      toast.error("Erro ao carregar lista de Devmons.");
-    });
-
+    const apiUrl = Api.personagem.readAll();
+    // console.log(apiUrl);
+    const response = await Api.buildApiGetRequest(apiUrl);
     if (response.ok) {
       const data = await response.json();
       setDevmons(data);
